@@ -15,7 +15,7 @@ const ImageList = () => {
   const handleDeleteImage = (imageId) => {
     // Call the delete image API
     axios
-      .delete(`https://api.coinfluence.io/${imageId}`)
+      .delete(`https://api.coinfluence.io/images/${imageId}`)
       .then(() => {
         // Remove the deleted image from the state
         setImages((prevImages) =>
