@@ -1,0 +1,36 @@
+/* App.css */
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #f0f0f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.app-container {
+  width: 400px; /* Adjust the width as needed */
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 16px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.MuiTabs-root {
+  background-color: #007bff;
+  color: #fff;
+  border-radius: 5px;
+}
+
+.MuiTabs-indicator {
+  background-color: #fff;
+}
+
+.MuiTab-root {
+  color: #fff;
+}
+
+.MuiTab-textColorPrimary.Mui-selected {
+  background-color: #0056b3;
+}
