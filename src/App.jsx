@@ -1,43 +1,63 @@
-/* eslint-disable no-unused-vars */
-import React, { useState } from "react";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
-import Box from "@mui/material/Box";
-import UploadIcon from "@mui/icons-material/CloudUpload";
-import PhotoLibraryIcon from "@mui/icons-material/PhotoLibrary";
-import UploadImage from "./UploadImage";
-import ImageList from "./ImageList";
-import "./App.css";
+// App.js
+import React, { useState, useEffect } from 'react';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from 'react-router-dom';
+import Login from './Login';
+import Upload from './Upload';
 
-function App() {
-  const [tabValue, setTabValue] = useState(0);
+const App = () => {
+  const [authenticated, setAuthenticated] = useState(false);
 
-  const handleChangeTab = (event, newValue) => {
-    setTabValue(newValue);
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (user) {
+      setAuthenticated(true);
+    }
+  }, []);
+
+  const handleLogin = () => {
+    setAuthenticated(true);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('user');
+    setAuthenticated(false);
   };
 
   return (
-    <div className="app-container">
-      <Tabs value={tabValue} onChange={handleChangeTab} centered>
-        <Tab
-          label="Upload Image"
-          icon={<UploadIcon />}
-          style={{ padding: "12px", margin: "0 12px" }} // Adjust padding and margin
+    <Router>
+      <Routes>
+        <Route
+          path="/login"
+          element={
+            authenticated ? (
+              <Navigate to="/upload" />
+            ) : (
+              <Login onLogin={handleLogin} />
+            )
+          }
         />
-        <Tab
-          label="Image List"
-          icon={<PhotoLibraryIcon />}
-          style={{ padding: "12px", margin: "0 12px" }} // Adjust padding and margin
+        <Route
+          path="/upload"
+          element={
+            <PrivateRoute
+              authenticated={authenticated}
+              component={<Upload onLogout={handleLogout} />}
+            />
+          }
         />
-      </Tabs>
-      <Box hidden={tabValue !== 0}>
-        <UploadImage />
-      </Box>
-      <Box hidden={tabValue !== 1}>
-        <ImageList key={tabValue} />
-      </Box>
-    </div>
+        <Route path="/*" element={<Navigate to="/login" />} />
+      </Routes>
+    </Router>
   );
-}
+};
+
+const PrivateRoute = ({ component, authenticated }) => {
+  return authenticated ? component : <Navigate to="/login" />;
+};
 
 export default App;
